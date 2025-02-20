@@ -83,13 +83,7 @@ class CardsBot:
             uid = message.chat.id
             sm.user_ensure(uid)
 
-            if sm.user_card_count(uid) == 0:
-                markup = self.inline_keyboard(['add', 'import'])
-                self.bot.send_message(
-                    uid,
-                    self.strings['messages']['start_no_cards'],
-                    reply_markup=markup
-                )
+            self.bot.send_message(uid, self.strings['messages']['start'])
 
     def handle_manage(self, message: Message):
         """Handles "manage" command"""
