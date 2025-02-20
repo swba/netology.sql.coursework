@@ -6,7 +6,6 @@ from typing import List
 
 from telebot import custom_filters, TeleBot
 from telebot.states import State, StatesGroup
-from telebot.states.sync.context import StateContext
 from telebot.storage import StateMemoryStorage
 from telebot.types import (
     BotCommand,
@@ -16,8 +15,7 @@ from telebot.types import (
     KeyboardButton,
     Message,
     ReplyKeyboardMarkup,
-    ReplyKeyboardRemove,
-    ReplyParameters
+    ReplyKeyboardRemove
 )
 
 import db
@@ -446,6 +444,22 @@ class CardsBot:
                     self.bot.set_state(uid, CardsBotStates.import_collection)
                     self.bot.add_data(uid, cid=cid)
                     self.handle_import_collection(message)
+
+    def handle_stats(self, message: Message):
+        """Handles "stats" command"""
+        uid = message.chat.id
+        with db.connect() as commands:
+            sm = StudyManager(commands)
+            user = sm.user_load(uid)
+
+            self.bot.send_message(
+                uid,
+                self.strings['messages']['stats'].format(
+                    level=user.level,
+                    score=user.score
+                ),
+                parse_mode='MarkdownV2'
+            )
 
     def inline_button(self, name: str):
         """Returns inline keyboard button
