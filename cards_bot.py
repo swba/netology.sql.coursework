@@ -1,5 +1,6 @@
 import json
 import os
+from random import choice, shuffle
 import re
 from typing import List
 
@@ -30,6 +31,7 @@ class CardsBotStates(StatesGroup):
     add_trans = State()
     delete_word = State()
     import_collection = State()
+    study_choice = State()
 
 
 class CardsBot:
@@ -39,7 +41,6 @@ class CardsBot:
         # Parse bot strings.
         with open(os.path.join(os.getcwd(), 'assets', 'bot_strings.json'), encoding='UTF-8') as file:
             self.strings = json.load(file)
-        commands = self.strings['commands']
 
         # Create a bot.
         self.bot = TeleBot(
@@ -68,6 +69,7 @@ class CardsBot:
         self.bot.message_handler(state=CardsBotStates.add_trans)(self.handle_add_trans)
         self.bot.message_handler(state=CardsBotStates.delete_word)(self.handle_delete_word)
         self.bot.message_handler(state=CardsBotStates.import_collection)(self.handle_import_collection)
+        self.bot.message_handler(state=CardsBotStates.study_choice)(self.handle_study_choice)
         self.bot.callback_query_handler(func=lambda call: True)(self.handle_callback_query)
 
         # Add custom filters.
@@ -80,7 +82,7 @@ class CardsBot:
         with db.connect() as commands:
             sm = StudyManager(commands)
 
-            uid = message.from_user.id
+            uid = message.chat.id
             sm.user_ensure(uid)
 
             if sm.user_card_count(uid) == 0:
@@ -122,6 +124,7 @@ class CardsBot:
         else:
             with db.connect() as commands:
                 sm = StudyManager(commands)
+
                 # User card already exists.
                 if user_card := sm.user_card_load(uid, word):
                     self.bot.send_message(
@@ -130,6 +133,7 @@ class CardsBot:
                             word=user_card.word
                         )
                     )
+
                 # General card already exists.
                 elif card := sm.card_load(word):
                     self.bot.send_message(
@@ -142,6 +146,7 @@ class CardsBot:
                     )
                     self.bot.set_state(uid, CardsBotStates.add_trans)
                     self.bot.add_data(uid, word=card.word)
+
                 # A brand-new word is about te be added.
                 else:
                     self.bot.send_message(
@@ -331,7 +336,93 @@ class CardsBot:
 
     def handle_study(self, message: Message):
         """Handles /study command"""
-        pass
+        uid = message.chat.id
+        with db.connect() as commands:
+            sm = StudyManager(commands)
+
+            # Check if the user has enough cards in their dictionary.
+            if sm.user_can_study(uid):
+                # Get 4 random user cards.
+                user_cards = sm.user_card_choices(uid)
+
+                # Card to study.
+                user_card = user_cards[0]
+
+                # Choose whether we are going to show an English word
+                # and ask to select its Russian translation, or vice
+                # versa.
+                if (lng := choice(['en', 'ru'])) == 'en':
+                    buttons = [uc.trans for uc in user_cards]
+                    word = user_card.word
+                    answer = user_card.trans
+                else:
+                    buttons = [uc.word for uc in user_cards]
+                    word = user_card.trans
+                    answer = user_card.word
+
+                # Add answers as reply buttons in random order.
+                shuffle(buttons)
+
+                self.bot.send_message(
+                    uid,
+                    self.strings['messages'][f'study_choice_{lng}'].format(
+                        word=word
+                    ),
+                    reply_markup=self.reply_keyboard(buttons)
+                )
+
+                self.bot.set_state(uid, CardsBotStates.study_choice)
+                self.bot.add_data(uid, cid=user_card.card_id, answer=answer)
+
+            else:
+                # Ask user to add more cards.
+                self.bot.send_message(
+                    uid,
+                    self.strings['messages']['study_not_enough'],
+                    reply_markup=self.inline_keyboard(['add_long', 'import'])
+                )
+
+    def handle_study_choice(self, message: Message):
+        """Handles "choice translation" step of the "study" command"""
+        uid = message.chat.id
+        text = message.text
+        with self.bot.retrieve_data(uid) as data:
+            cid = data.get('cid')
+            answer = data.get('answer')
+
+        # Whether the user's choice is correct.
+        if success := text.lower() == answer.lower():
+            self.bot.send_message(
+                uid,
+                self.strings['messages']['study_success'],
+                reply_markup=ReplyKeyboardRemove()
+            )
+        else:
+            self.bot.send_message(
+                uid,
+                self.strings['messages']['study_fail'].format(answer=answer),
+                reply_markup=ReplyKeyboardRemove()
+            )
+
+        with db.connect() as commands:
+            sm = StudyManager(commands)
+            # Congratulate the user if they leveled up.
+            if level := sm.user_card_study(uid, cid, success):
+                self.bot.send_message(
+                    uid,
+                    self.strings['messages']['level_up'].format(level=level),
+                    parse_mode='MarkdownV2'
+                )
+
+        self.bot.send_message(
+            uid,
+            self.strings['messages']['study_continue'],
+            reply_markup=self.inline_keyboard(['study'])
+        )
+
+        # Clear bot's state and data on exit.
+        self.bot.delete_state(uid)
+        self.bot.reset_data(uid)
 
     def handle_callback_query(self, call: CallbackQuery):
         """Default callback query handler"""
@@ -346,6 +437,8 @@ class CardsBot:
                 self.handle_import(message)
             case 'list':
                 self.handle_list(message)
+            case 'study':
+                self.handle_study(message)
             case _:
                 # Import a collection.
                 if call.data.startswith('import:'):
@@ -389,12 +482,13 @@ class CardsBot:
         """
         return KeyboardButton(text)
 
-    def reply_keyboard(self, buttons: List[str]):
+    def reply_keyboard(self, names: List[str]):
         """Returns reply keyboard markup
 
         Args:
-            buttons: The list of button names.
+            names: The list of button names.
         """
         markup = ReplyKeyboardMarkup(resize_keyboard=True)
-        markup.add(*map(self.reply_button, buttons))
+        for name in names:
+            markup.add(self.reply_button(name))
         return markup

@@ -1,7 +1,10 @@
+from datetime import datetime
 import json
 import os
 from typing import List, Optional
+from time import time
 
+from numpy.random import choice
 from pydapper.commands import Commands
 from pydapper.exceptions import NoResultException
 
@@ -88,11 +91,11 @@ class StudyManager:
         else:
             card: Card = self.card_load(word)
             if trans not in card.trans:
-                # Add new word translation to the existing one.
                 self.commands.execute(
                     "UPDATE card SET trans = ?trans? WHERE id = ?id?",
                     param={'trans': f'{card.trans}, {trans}', 'id': card.id}
                 )
+            # Add the card to a new collection, if needed.
             if cid:
                 # Check if the card belongs to the collection.
                 collection_count = self.commands.execute_scalar(
@@ -317,7 +320,74 @@ class StudyManager:
             param={'uid': uid}
         )
 
-    @staticmethod
-    def can_study(card_count: int) -> bool:
-        """Checks if card count is enough to study"""
-        return card_count > 4
+    def user_card_study(self, uid: int, cid: int, success: bool) -> Optional[int]:
+        """Updates user card after it was studied
+
+        Args:
+            uid: The ID of the user.
+            cid: The ID of the card.
+            success: Whether the user's answer was correct.
+
+        Returns:
+            (optional) New user's level, if it increased.
+        """
+        now = datetime.now()
+
+        # Update the user card that has been studied.
+        user_card = self.commands.query_single(
+            "SELECT * FROM user_card WHERE user_id = ?uid? AND card_id = ?cid?",
+            model=UserCard,
+            param={'uid': uid, 'cid': cid}
+        )
+        # Score cannot be negative, as it'd break card selection.
+        score = max(0, user_card.score + (1 if success else -1))
+        self.commands.execute(
+            """
+            UPDATE user_card SET score = ?score?, last_study = ?now? 
+                WHERE user_id = ?uid? AND card_id = ?cid?
+            """,
+            param={'uid': uid, 'cid': cid, 'score': score, 'now': now.isoformat()}
+        )
+
+        # Update the user's stats.
+        user = self.user_load(uid)
+        # User's score cannot be negative and cannot decrease, as we
+        # can't allow user's level lowering.
+        score = user.score + (1 if success else 0)
+        level = user.calc_level()
+        self.commands.execute(
+            "UPDATE users SET score = ?score?, level = ?level? WHERE id = ?uid?",
+            param={'uid': uid, 'score': score, 'level': level}
+        )
+
+        if level > user.level:
+            return level
+
+    def user_card_choices(self, uid: int, k = 4) -> List[UserCard]:
+        """Returns list of k user cards chosen randomly
+
+        Args:
+            uid: The ID of the user.
+            k: (optional) How many user cards to return. Defaults to 4.
+        """
+        now = time()
+        user_cards = self.user_card_list(uid)
+        # User cards are being randomly chosen taking their weights
+        # into account. Card's weight depends on its score and when it
+        # was studied last time:
+        # - The less card score, the larger its weight.
+        # - The greater the time since the card was studied, the larger
+        #   its weight.
+        weights = [(now - uc.last_study.timestamp()) / 86400 / (uc.score + 1)
+                   for uc in user_cards]
+        weight_sum = sum(weights) or 1
+        probs = [w / weight_sum for w in weights]
+        return list(choice(user_cards, size=k, replace=False, p=probs))
+
+    def user_can_study(self, uid: int) -> bool:
+        """Checks if the user has enough cards to study
+
+        Args:
+            uid: The ID of the user.
+        """
+        return self.user_card_count(uid) > 4

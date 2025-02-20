@@ -35,7 +35,7 @@ def ensure_tables(commands: Commands):
         CREATE TABLE IF NOT EXISTS users (
             id INTEGER NOT NULL PRIMARY KEY,
             score INTEGER NOT NULL DEFAULT 0,
-            level INTEGER NOT NULL DEFAULT 0);
+            level INTEGER NOT NULL DEFAULT 1);
         """)
 
     # A user card is a many-to-many user-card relationship, which
@@ -46,7 +46,7 @@ def ensure_tables(commands: Commands):
             user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
             card_id INTEGER NOT NULL REFERENCES card(id) ON DELETE CASCADE,
             trans VARCHAR(100) NOT NULL,
-            last_study TIMESTAMP DEFAULT 0,
+            last_study TIMESTAMP DEFAULT 'yesterday',
             score INTEGER NOT NULL DEFAULT 0,
             CONSTRAINT user_card_pkey PRIMARY KEY (user_id, card_id));
         """)
