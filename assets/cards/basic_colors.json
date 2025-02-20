@@ -1,0 +1,49 @@
+{
+  "name": "Основные цвета",
+  "words": [
+    {
+      "word": "red",
+      "translation": "красный"
+    },
+    {
+      "word": "orange",
+      "translation": "оранжевый"
+    },
+    {
+      "word": "yellow",
+      "translation": "жёлтый"
+    },
+    {
+      "word": "green",
+      "translation": "зелёный"
+    },
+    {
+      "word": "blue",
+      "translation": "синий"
+    },
+    {
+      "word": "purple",
+      "translation": "фиолетовый"
+    },
+    {
+      "word": "white",
+      "translation": "белый"
+    },
+    {
+      "word": "black",
+      "translation": "чёрный"
+    },
+    {
+      "word": "brown",
+      "translation": "коричневый"
+    },
+    {
+      "word": "gray",
+      "translation": "серый"
+    },
+    {
+      "word": "pink",
+      "translation": "розовый"
+    }
+  ]
+}

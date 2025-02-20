@@ -1,0 +1,113 @@
+{
+  "name": "Еда и напитки",
+  "words": [
+    {
+      "word": "carrot",
+      "translation": "морковь"
+    },
+    {
+      "word": "potato",
+      "translation": "картофель"
+    },
+    {
+      "word": "cucumber",
+      "translation": "огурец"
+    },
+    {
+      "word": "tomato",
+      "translation": "помидор"
+    },
+    {
+      "word": "cabbage",
+      "translation": "капуста"
+    },
+    {
+      "word": "rice",
+      "translation": "рис"
+    },
+    {
+      "word": "milk",
+      "translation": "молоко"
+    },
+    {
+      "word": "yogurt",
+      "translation": "йогурт"
+    },
+    {
+      "word": "sandwich",
+      "translation": "сэндвич"
+    },
+    {
+      "word": "muffin",
+      "translation": "маффин, кекс"
+    },
+    {
+      "word": "ice cream",
+      "translation": "мороженое"
+    },
+    {
+      "word": "cake",
+      "translation": "торт"
+    },
+    {
+      "word": "tuna",
+      "translation": "тунец"
+    },
+    {
+      "word": "salmon",
+      "translation": "лосось"
+    },
+    {
+      "word": "chicken",
+      "translation": "курица"
+    },
+    {
+      "word": "beef",
+      "translation": "говядина"
+    },
+    {
+      "word": "turkey",
+      "translation": "индейка"
+    },
+    {
+      "word": "pork",
+      "translation": "свинина"
+    },
+    {
+      "word": "pepper",
+      "translation": "перец"
+    },
+    {
+      "word": "orange",
+      "translation": "апельсин"
+    },
+    {
+      "word": "banana",
+      "translation": "банан"
+    },
+    {
+      "word": "apple",
+      "translation": "яблоко"
+    },
+    {
+      "word": "grape",
+      "translation": "виноград"
+    },
+    {
+      "word": "juice",
+      "translation": "сок"
+    },
+    {
+      "word": "tea",
+      "translation": "чай"
+    },
+    {
+      "word": "coffee",
+      "translation": "кофе"
+    },
+    {
+      "word": "water",
+      "translation": "вода"
+    }
+  ]
+}

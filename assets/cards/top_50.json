@@ -1,0 +1,201 @@
+{
+  "name": "Топ-50 частотных слов",
+  "words": [
+    {
+      "word": "area",
+      "translation": "площадь"
+    },
+    {
+      "word": "book",
+      "translation": "книга"
+    },
+    {
+      "word": "business",
+      "translation": "бизнес"
+    },
+    {
+      "word": "case",
+      "translation": "дело"
+    },
+    {
+      "word": "child",
+      "translation": "ребёнок"
+    },
+    {
+      "word": "company",
+      "translation": "компания"
+    },
+    {
+      "word": "country",
+      "translation": "страна"
+    },
+    {
+      "word": "day",
+      "translation": "день"
+    },
+    {
+      "word": "eye",
+      "translation": "глаз"
+    },
+    {
+      "word": "fact",
+      "translation": "факт"
+    },
+    {
+      "word": "family",
+      "translation": "семья"
+    },
+    {
+      "word": "government",
+      "translation": "правительство"
+    },
+    {
+      "word": "group",
+      "translation": "группа"
+    },
+    {
+      "word": "hand",
+      "translation": "рука"
+    },
+    {
+      "word": "home",
+      "translation": "дом"
+    },
+    {
+      "word": "job",
+      "translation": "работа"
+    },
+    {
+      "word": "life",
+      "translation": "жизнь"
+    },
+    {
+      "word": "lot",
+      "translation": "много"
+    },
+    {
+      "word": "man",
+      "translation": "мужчина"
+    },
+    {
+      "word": "money",
+      "translation": "деньги"
+    },
+    {
+      "word": "month",
+      "translation": "месяц"
+    },
+    {
+      "word": "mother",
+      "translation": "мама"
+    },
+    {
+      "word": "Mr",
+      "translation": "мистер"
+    },
+    {
+      "word": "night",
+      "translation": "ночь"
+    },
+    {
+      "word": "number",
+      "translation": "номер"
+    },
+    {
+      "word": "part",
+      "translation": "часть"
+    },
+    {
+      "word": "people",
+      "translation": "люди"
+    },
+    {
+      "word": "place",
+      "translation": "место"
+    },
+    {
+      "word": "point",
+      "translation": "точка"
+    },
+    {
+      "word": "problem",
+      "translation": "проблема"
+    },
+    {
+      "word": "program",
+      "translation": "программа"
+    },
+    {
+      "word": "question",
+      "translation": "вопрос"
+    },
+    {
+      "word": "right",
+      "translation": "правильно"
+    },
+    {
+      "word": "room",
+      "translation": "комната"
+    },
+    {
+      "word": "school",
+      "translation": "школа"
+    },
+    {
+      "word": "state",
+      "translation": "государство"
+    },
+    {
+      "word": "story",
+      "translation": "история"
+    },
+    {
+      "word": "study",
+      "translation": "изучение"
+    },
+    {
+      "word": "system",
+      "translation": "система"
+    },
+    {
+      "word": "thing",
+      "translation": "вещь"
+    },
+    {
+      "word": "time",
+      "translation": "время"
+    },
+    {
+      "word": "water",
+      "translation": "вода"
+    },
+    {
+      "word": "way",
+      "translation": "путь"
+    },
+    {
+      "word": "week",
+      "translation": "неделя"
+    },
+    {
+      "word": "woman",
+      "translation": "женщина"
+    },
+    {
+      "word": "word",
+      "translation": "слово"
+    },
+    {
+      "word": "work",
+      "translation": "работа"
+    },
+    {
+      "word": "world",
+      "translation": "мир"
+    },
+    {
+      "word": "year",
+      "translation": "год"
+    }
+  ]
+}
