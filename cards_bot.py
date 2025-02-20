@@ -421,7 +421,7 @@ class CardsBot:
         message = call.message
         uid = message.chat.id
         match call.data:
-            case 'add':
+            case 'add' | 'add_long':
                 self.handle_add(message)
             case 'delete':
                 self.handle_delete(message)
