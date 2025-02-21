@@ -53,21 +53,22 @@ class CardsBot:
             schema.ensure_tables(commands)
             StudyManager(commands).ensure_default_data()
 
-        commands = self.strings['commands']
+        bot_commands = self.strings['commands']
 
         # Set bot commands to be shown in the menu.
         self.bot.set_my_commands([
-            BotCommand(command, commands[command]) for command in commands
+            BotCommand(command, bot_commands[command]) for command in bot_commands
         ])
 
         # Register bot callbacks.
-        for command in commands:
+        for command in bot_commands:
             self.bot.message_handler(commands=[command])(getattr(self, f'handle_{command}'))
         self.bot.message_handler(state=CardsBotStates.add_word)(self.handle_add_word)
         self.bot.message_handler(state=CardsBotStates.add_trans)(self.handle_add_trans)
         self.bot.message_handler(state=CardsBotStates.delete_word)(self.handle_delete_word)
         self.bot.message_handler(state=CardsBotStates.import_collection)(self.handle_import_collection)
         self.bot.message_handler(state=CardsBotStates.study_choice)(self.handle_study_choice)
+        self.bot.message_handler(content_types=['text'])(self.handle_default)
         self.bot.callback_query_handler(func=lambda call: True)(self.handle_callback_query)
 
         # Add custom filters.
@@ -343,7 +344,7 @@ class CardsBot:
                 # Choose whether we are going to show an English word
                 # and ask to select its Russian translation, or vice
                 # versa.
-                if (lng := choice(['en', 'ru'])) == 'en':
+                if (lang := choice(['en', 'ru'])) == 'en':
                     buttons = [uc.trans for uc in user_cards]
                     word = user_card.word
                     answer = user_card.trans
@@ -357,7 +358,7 @@ class CardsBot:
 
                 self.bot.send_message(
                     uid,
-                    self.strings['messages'][f'study_choice_{lng}'].format(
+                    self.strings['messages'][f'study_choice_{lang}'].format(
                         word=word
                     ),
                     reply_markup=self.reply_keyboard(buttons)
@@ -416,6 +417,51 @@ class CardsBot:
         self.bot.delete_state(uid)
         self.bot.reset_data(uid)
 
+    def handle_stats(self, message: Message):
+        """Handles "stats" command"""
+        uid = message.chat.id
+        with db.connect() as commands:
+            sm = StudyManager(commands)
+            user = sm.user_load(uid)
+
+            self.bot.send_message(
+                uid,
+                self.strings['messages']['stats'].format(
+                    level=user.level,
+                    score=user.score
+                ),
+                parse_mode='MarkdownV2'
+            )
+
+    def handle_default(self, message: Message):
+        """Default text handler"""
+        uid = message.chat.id
+        text = message.text
+
+        with db.connect() as commands:
+            sm = StudyManager(commands)
+
+            # Try to find a user card by text.
+            if user_card := sm.user_card_search(uid, text):
+                word, trans = user_card.word, user_card.trans
+            # Try to find a common card by text.
+            elif card := sm.card_search(text):
+                word, trans = card.word, card.trans
+            else:
+                word, trans = None, None
+
+            if word and trans:
+                reply = self.strings['messages']['translate'].format(
+                    word=word,
+                    trans=trans
+                )
+            elif len(text.split()) == 1:
+                reply = self.strings['messages']['no_translation']
+            else:
+                reply = self.strings['messages']['default']
+
+            self.bot.send_message(uid, reply)
+
     def handle_callback_query(self, call: CallbackQuery):
         """Default callback query handler"""
         message = call.message
@@ -438,22 +484,6 @@ class CardsBot:
                     self.bot.set_state(uid, CardsBotStates.import_collection)
                     self.bot.add_data(uid, cid=cid)
                     self.handle_import_collection(message)
-
-    def handle_stats(self, message: Message):
-        """Handles "stats" command"""
-        uid = message.chat.id
-        with db.connect() as commands:
-            sm = StudyManager(commands)
-            user = sm.user_load(uid)
-
-            self.bot.send_message(
-                uid,
-                self.strings['messages']['stats'].format(
-                    level=user.level,
-                    score=user.score
-                ),
-                parse_mode='MarkdownV2'
-            )
 
     def inline_button(self, name: str):
         """Returns inline keyboard button

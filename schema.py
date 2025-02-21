@@ -33,7 +33,7 @@ def ensure_tables(commands: Commands):
     # so we add some additional fields.
     commands.execute("""
         CREATE TABLE IF NOT EXISTS users (
-            id INTEGER NOT NULL PRIMARY KEY,
+            id BIGINT NOT NULL PRIMARY KEY,
             score INTEGER NOT NULL DEFAULT 0,
             level INTEGER NOT NULL DEFAULT 1);
         """)
@@ -43,7 +43,7 @@ def ensure_tables(commands: Commands):
     # translation, which can be unique for a user.
     commands.execute("""
         CREATE TABLE IF NOT EXISTS user_card (
-            user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+            user_id BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
             card_id INTEGER NOT NULL REFERENCES card(id) ON DELETE CASCADE,
             trans VARCHAR(100) NOT NULL,
             last_study TIMESTAMP DEFAULT 'yesterday',
@@ -54,9 +54,9 @@ def ensure_tables(commands: Commands):
 def drop_tables(commands: Commands):
     """Drops the project's tables"""
     commands.execute("""
-        DROP TABLE IF EXISTS card;
-        DROP TABLE IF EXISTS collection;
         DROP TABLE IF EXISTS card_collection;
-        DROP TABLE IF EXISTS user;
+        DROP TABLE IF EXISTS collection;
         DROP TABLE IF EXISTS user_card;
+        DROP TABLE IF EXISTS users;
+        DROP TABLE IF EXISTS card;
         """)

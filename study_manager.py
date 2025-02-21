@@ -6,7 +6,6 @@ from time import time
 
 from numpy.random import choice
 from pydapper.commands import Commands
-from pydapper.exceptions import NoResultException
 
 from model import Card, Collection, User, UserCard
 
@@ -58,14 +57,43 @@ class StudyManager:
         Args:
             word: The card's underlying English word.
         """
-        try:
-            return self.commands.query_single(
-                "SELECT * FROM card WHERE LOWER(word)=LOWER(?word?)",
+        return self.commands.query_single_or_default(
+            "SELECT * FROM card WHERE LOWER(word)=LOWER(?word?)",
+            model=Card,
+            param={'word': word},
+            default=None
+        )
+
+    def card_load_by_translation(self, trans: str) -> Optional[Card]:
+        """Loads a card given its translation
+
+        Args:
+            trans: The card's translation.
+        """
+        return self.commands.query_single_or_default(
+            "SELECT * FROM card WHERE LOWER(trans)=LOWER(?trans?)",
+            model=Card,
+            param={'trans': trans},
+            default=None
+        )
+
+    def card_search(self, text: str) -> Optional[Card]:
+        """Searches a card byt its word and translation
+
+        Args:
+            text: The text to find the card by.
+        """
+        if card := self.card_load(text):
+            return card
+        elif card := self.card_load_by_translation(text):
+            return card
+        else:
+            return self.commands.query_first_or_default(
+                "SELECT * FROM card WHERE word ILIKE ?text? OR trans ILIKE ?text?",
                 model=Card,
-                param={'word': word}
+                param={'text': f'%{text}%'},
+                default=None
             )
-        except NoResultException:
-            return None
 
     def card_add(self, word: str, trans: str, cid: int = None) -> int:
         """Adds a new card or updates the existing one
@@ -180,14 +208,12 @@ class StudyManager:
         Args:
             uid: The ID of the user.
         """
-        try:
-            return self.commands.query_single(
-                "SELECT * FROM users WHERE id=?id?",
-                model=User,
-                param={'id': uid}
-            )
-        except NoResultException:
-            return None
+        return self.commands.query_single_or_default(
+            "SELECT * FROM users WHERE id=?id?",
+            model=User,
+            param={'id': uid},
+            default=None
+        )
 
     def user_ensure(self, uid: int):
         """Creates a user, if needed
@@ -258,18 +284,58 @@ class StudyManager:
             uid: The ID of the user.
             word: The card's underlying English word.
         """
-        try:
-            return self.commands.query_single(
+        return self.commands.query_single_or_default(
+            """
+            SELECT uc.*, c.word FROM user_card uc
+                JOIN card c ON uc.card_id = c.id
+                WHERE uc.user_id = ?uid? AND LOWER(c.word) = LOWER(?word?)
+            """,
+            model=UserCard,
+            param={'uid': uid, 'word': word},
+            default=None
+        )
+
+    def user_card_load_by_translation(self, uid: int, trans: str) -> Optional[UserCard]:
+        """Loads a user card given its translation
+
+        Args:
+            uid: The ID of the user.
+            trans: The card's translation.
+        """
+        return self.commands.query_single_or_default(
+            """
+            SELECT uc.*, c.word FROM user_card uc
+                JOIN card c ON uc.card_id = c.id
+                WHERE uc.user_id = ?uid? AND LOWER(uc.trans) = LOWER(?trans?)
+            """,
+            model=UserCard,
+            param={'uid': uid, 'trans': trans},
+            default=None
+        )
+
+    def user_card_search(self, uid: int, text: str) -> Optional[UserCard]:
+        """Searches a user card by its word and translation
+
+        Args:
+            uid: The ID of the user.
+            text: The text to find the user card by.
+        """
+        if user_card := self.user_card_load(uid, text):
+            return user_card
+        elif user_card := self.user_card_load_by_translation(uid, text):
+            return user_card
+        else:
+            return self.commands.query_first_or_default(
                 """
                 SELECT uc.*, c.word FROM user_card uc
                     JOIN card c ON uc.card_id = c.id
-                    WHERE uc.user_id = ?uid? AND LOWER(c.word) = LOWER(?word?)
+                    WHERE uc.user_id = ?uid? AND 
+                        (c.word ILIKE ?text? OR uc.trans ILIKE ?text?)
                 """,
                 model=UserCard,
-                param={'uid': uid, 'word': word}
+                param={'uid': uid, 'text': f'%{text}%'},
+                default=None
             )
-        except NoResultException:
-            return None
 
     def user_card_add(self, uid: int, word: str = None, trans: str = None):
         """Adds a user card
