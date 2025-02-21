@@ -2,204 +2,204 @@
   "name": "Топ-50 частотных слов",
   "words": [
     {
-      "word": "area",
-      "translation": "площадь"
+      "word": "Area",
+      "translation": "Площадь"
     },
     {
-      "word": "book",
-      "translation": "книга"
+      "word": "Book",
+      "translation": "Книга"
     },
     {
-      "word": "business",
-      "translation": "бизнес"
+      "word": "Business",
+      "translation": "Бизнес"
     },
     {
-      "word": "case",
-      "translation": "дело"
+      "word": "Case",
+      "translation": "Дело"
     },
     {
-      "word": "child",
-      "translation": "ребёнок"
+      "word": "Child",
+      "translation": "Ребёнок"
     },
     {
-      "word": "company",
-      "translation": "компания"
+      "word": "Company",
+      "translation": "Компания"
     },
     {
-      "word": "country",
-      "translation": "страна"
+      "word": "Country",
+      "translation": "Страна"
     },
     {
-      "word": "day",
-      "translation": "день"
+      "word": "Day",
+      "translation": "День"
     },
     {
-      "word": "eye",
-      "translation": "глаз"
+      "word": "Eye",
+      "translation": "Глаз"
     },
     {
-      "word": "fact",
-      "translation": "факт"
+      "word": "Fact",
+      "translation": "Факт"
     },
     {
-      "word": "family",
-      "translation": "семья"
+      "word": "Family",
+      "translation": "Семья"
     },
     {
-      "word": "food",
-      "translation": "еда"
+      "word": "Food",
+      "translation": "Еда"
     },
     {
-      "word": "government",
-      "translation": "правительство"
+      "word": "Government",
+      "translation": "Правительство"
     },
     {
-      "word": "group",
-      "translation": "группа"
+      "word": "Group",
+      "translation": "Группа"
     },
     {
-      "word": "hand",
-      "translation": "рука"
+      "word": "Hand",
+      "translation": "Рука"
     },
     {
-      "word": "home",
-      "translation": "дом"
+      "word": "Home",
+      "translation": "Дом"
     },
     {
-      "word": "job",
-      "translation": "работа"
+      "word": "Job",
+      "translation": "Работа"
     },
     {
-      "word": "life",
-      "translation": "жизнь"
+      "word": "Life",
+      "translation": "Жизнь"
     },
     {
-      "word": "lot",
-      "translation": "много"
+      "word": "Lot",
+      "translation": "Много"
     },
     {
-      "word": "man",
-      "translation": "мужчина"
+      "word": "Man",
+      "translation": "Мужчина"
     },
     {
-      "word": "money",
-      "translation": "деньги"
+      "word": "Money",
+      "translation": "Деньги"
     },
     {
-      "word": "month",
-      "translation": "месяц"
+      "word": "Month",
+      "translation": "Месяц"
     },
     {
-      "word": "mother",
-      "translation": "мама"
+      "word": "Mother",
+      "translation": "Мама"
     },
     {
       "word": "Mr",
-      "translation": "мистер"
+      "translation": "Мистер"
     },
     {
-      "word": "night",
-      "translation": "ночь"
+      "word": "Night",
+      "translation": "Ночь"
     },
     {
-      "word": "number",
-      "translation": "номер"
+      "word": "Number",
+      "translation": "Номер"
     },
     {
-      "word": "part",
-      "translation": "часть"
+      "word": "Part",
+      "translation": "Часть"
     },
     {
-      "word": "people",
-      "translation": "люди"
+      "word": "People",
+      "translation": "Люди"
     },
     {
-      "word": "place",
-      "translation": "место"
+      "word": "Place",
+      "translation": "Место"
     },
     {
-      "word": "point",
-      "translation": "точка"
+      "word": "Point",
+      "translation": "Точка"
     },
     {
-      "word": "problem",
-      "translation": "проблема"
+      "word": "Problem",
+      "translation": "Проблема"
     },
     {
-      "word": "program",
-      "translation": "программа"
+      "word": "Program",
+      "translation": "Программа"
     },
     {
-      "word": "question",
-      "translation": "вопрос"
+      "word": "Question",
+      "translation": "Вопрос"
     },
     {
-      "word": "right",
-      "translation": "правильно"
+      "word": "Right",
+      "translation": "Правильно"
     },
     {
-      "word": "room",
-      "translation": "комната"
+      "word": "Room",
+      "translation": "Комната"
     },
     {
-      "word": "school",
-      "translation": "школа"
+      "word": "School",
+      "translation": "Школа"
     },
     {
-      "word": "state",
-      "translation": "государство"
+      "word": "State",
+      "translation": "Государство"
     },
     {
-      "word": "story",
-      "translation": "история"
+      "word": "Story",
+      "translation": "История"
     },
     {
-      "word": "study",
-      "translation": "изучение"
+      "word": "Study",
+      "translation": "Изучение"
     },
     {
-      "word": "system",
-      "translation": "система"
+      "word": "System",
+      "translation": "Система"
     },
     {
-      "word": "thing",
-      "translation": "вещь"
+      "word": "Thing",
+      "translation": "Вещь"
     },
     {
-      "word": "time",
-      "translation": "время"
+      "word": "Time",
+      "translation": "Время"
     },
     {
-      "word": "water",
-      "translation": "вода"
+      "word": "Water",
+      "translation": "Вода"
     },
     {
-      "word": "way",
-      "translation": "путь"
+      "word": "Way",
+      "translation": "Путь"
     },
     {
-      "word": "week",
-      "translation": "неделя"
+      "word": "Week",
+      "translation": "Неделя"
     },
     {
-      "word": "woman",
-      "translation": "женщина"
+      "word": "Woman",
+      "translation": "Женщина"
     },
     {
-      "word": "word",
-      "translation": "слово"
+      "word": "Word",
+      "translation": "Слово"
     },
     {
-      "word": "work",
-      "translation": "работа"
+      "word": "Work",
+      "translation": "Работа"
     },
     {
-      "word": "world",
-      "translation": "мир"
+      "word": "World",
+      "translation": "Мир"
     },
     {
-      "word": "year",
-      "translation": "год"
+      "word": "Year",
+      "translation": "Год"
     }
   ]
 }

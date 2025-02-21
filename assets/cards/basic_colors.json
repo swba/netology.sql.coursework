@@ -2,48 +2,48 @@
   "name": "Основные цвета",
   "words": [
     {
-      "word": "red",
-      "translation": "красный"
+      "word": "Red",
+      "translation": "Красный"
     },
     {
-      "word": "orange",
-      "translation": "оранжевый"
+      "word": "Orange",
+      "translation": "Оранжевый"
     },
     {
-      "word": "yellow",
-      "translation": "жёлтый"
+      "word": "Yellow",
+      "translation": "Жёлтый"
     },
     {
-      "word": "green",
-      "translation": "зелёный"
+      "word": "Green",
+      "translation": "Зелёный"
     },
     {
-      "word": "blue",
-      "translation": "синий"
+      "word": "Blue",
+      "translation": "Синий"
     },
     {
-      "word": "purple",
-      "translation": "фиолетовый"
+      "word": "Purple",
+      "translation": "Фиолетовый"
     },
     {
-      "word": "white",
-      "translation": "белый"
+      "word": "White",
+      "translation": "Белый"
     },
     {
-      "word": "black",
-      "translation": "чёрный"
+      "word": "Black",
+      "translation": "Чёрный"
     },
     {
-      "word": "brown",
-      "translation": "коричневый"
+      "word": "Brown",
+      "translation": "Коричневый"
     },
     {
-      "word": "gray",
-      "translation": "серый"
+      "word": "Gray",
+      "translation": "Серый"
     },
     {
-      "word": "pink",
-      "translation": "розовый"
+      "word": "Pink",
+      "translation": "Розовый"
     }
   ]
 }

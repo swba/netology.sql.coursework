@@ -2,112 +2,112 @@
   "name": "Еда и напитки",
   "words": [
     {
-      "word": "carrot",
-      "translation": "морковь"
+      "word": "Carrot",
+      "translation": "Морковь"
     },
     {
-      "word": "potato",
-      "translation": "картофель"
+      "word": "Potato",
+      "translation": "Картофель"
     },
     {
-      "word": "cucumber",
-      "translation": "огурец"
+      "word": "Cucumber",
+      "translation": "Огурец"
     },
     {
-      "word": "tomato",
-      "translation": "помидор"
+      "word": "Tomato",
+      "translation": "Помидор"
     },
     {
-      "word": "cabbage",
-      "translation": "капуста"
+      "word": "Cabbage",
+      "translation": "Капуста"
     },
     {
-      "word": "rice",
-      "translation": "рис"
+      "word": "Rice",
+      "translation": "Рис"
     },
     {
-      "word": "milk",
-      "translation": "молоко"
+      "word": "Milk",
+      "translation": "Молоко"
     },
     {
-      "word": "yogurt",
-      "translation": "йогурт"
+      "word": "Yogurt",
+      "translation": "Йогурт"
     },
     {
-      "word": "sandwich",
-      "translation": "сэндвич"
+      "word": "Sandwich",
+      "translation": "Сэндвич"
     },
     {
-      "word": "muffin",
-      "translation": "маффин, кекс"
+      "word": "Muffin",
+      "translation": "Маффин, кекс"
     },
     {
-      "word": "ice cream",
-      "translation": "мороженое"
+      "word": "Ice cream",
+      "translation": "Мороженое"
     },
     {
-      "word": "cake",
-      "translation": "торт"
+      "word": "Cake",
+      "translation": "Торт"
     },
     {
-      "word": "tuna",
-      "translation": "тунец"
+      "word": "Tuna",
+      "translation": "Тунец"
     },
     {
-      "word": "salmon",
-      "translation": "лосось"
+      "word": "Salmon",
+      "translation": "Лосось"
     },
     {
-      "word": "chicken",
-      "translation": "курица"
+      "word": "Chicken",
+      "translation": "Курица"
     },
     {
-      "word": "beef",
-      "translation": "говядина"
+      "word": "Beef",
+      "translation": "Говядина"
     },
     {
-      "word": "turkey",
-      "translation": "индейка"
+      "word": "Turkey",
+      "translation": "Индейка"
     },
     {
-      "word": "pork",
-      "translation": "свинина"
+      "word": "Pork",
+      "translation": "Свинина"
     },
     {
-      "word": "pepper",
-      "translation": "перец"
+      "word": "Pepper",
+      "translation": "Перец"
     },
     {
-      "word": "orange",
-      "translation": "апельсин"
+      "word": "Orange",
+      "translation": "Апельсин"
     },
     {
-      "word": "banana",
-      "translation": "банан"
+      "word": "Banana",
+      "translation": "Банан"
     },
     {
-      "word": "apple",
-      "translation": "яблоко"
+      "word": "Apple",
+      "translation": "Яблоко"
     },
     {
-      "word": "grape",
-      "translation": "виноград"
+      "word": "Grape",
+      "translation": "Виноград"
     },
     {
-      "word": "juice",
-      "translation": "сок"
+      "word": "Juice",
+      "translation": "Сок"
     },
     {
-      "word": "tea",
-      "translation": "чай"
+      "word": "Tea",
+      "translation": "Чай"
     },
     {
-      "word": "coffee",
-      "translation": "кофе"
+      "word": "Coffee",
+      "translation": "Кофе"
     },
     {
-      "word": "water",
-      "translation": "вода"
+      "word": "Water",
+      "translation": "Вода"
     }
   ]
 }

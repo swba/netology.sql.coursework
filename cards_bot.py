@@ -111,7 +111,7 @@ class CardsBot:
         uid = message.chat.id
         word = message.text
         # A very basic check that the word is correct.
-        if re.fullmatch(r'[a-zA-Z-]+', word) is None:
+        if re.fullmatch(r"[a-zA-Z' -]+", word) is None:
             self.bot.send_message(uid, self.strings['messages']['word_error'])
         else:
             with db.connect() as commands:
