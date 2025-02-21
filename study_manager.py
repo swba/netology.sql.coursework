@@ -93,7 +93,7 @@ class StudyManager:
             if trans not in card.trans:
                 self.commands.execute(
                     "UPDATE card SET trans = ?trans? WHERE id = ?id?",
-                    param={'trans': f'{card.trans}, {trans}', 'id': card.id}
+                    param={'trans': f'{card.trans}, {trans.lower()}', 'id': card.id}
                 )
             # Add the card to a new collection, if needed.
             if cid:
