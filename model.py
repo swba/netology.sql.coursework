@@ -23,7 +23,7 @@ class User:
     """A user model"""
     id: int
     score: int = 0
-    level: int = 0
+    level: int = 1
 
     def calc_level(self) -> int:
         """Calculates user's level based on their score"""

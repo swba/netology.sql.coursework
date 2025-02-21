@@ -337,7 +337,7 @@ class StudyManager:
                 default=None
             )
 
-    def user_card_add(self, uid: int, word: str = None, trans: str = None):
+    def user_card_add(self, uid: int, word: str, trans: str):
         """Adds a user card
 
         Args:
@@ -346,15 +346,19 @@ class StudyManager:
             trans: The English word's translation.
         """
         # Add a new card, if needed.
-        card_id = self.card_add(word, trans)
-        # Create a new user card.
-        self.commands.execute(
-            """
-            INSERT INTO user_card (user_id, card_id, trans) 
-                VALUES(?user_id?, ?card_id?, ?trans?)
-            """,
-            param={'user_id': uid, 'card_id': card_id, 'trans': trans}
-        )
+        if card := self.card_load(word):
+            card_id = card.id
+        else:
+            card_id = self.card_add(word, trans)
+        # Create a new user card, if needed.
+        if not self.user_card_exists(uid, word):
+            self.commands.execute(
+                """
+                INSERT INTO user_card (user_id, card_id, trans) 
+                    VALUES(?user_id?, ?card_id?, ?trans?)
+                """,
+                param={'user_id': uid, 'card_id': card_id, 'trans': trans}
+            )
 
     def user_card_delete(self, uid: int, word: str) -> int:
         """Deletes a user card
@@ -399,35 +403,40 @@ class StudyManager:
         """
         now = datetime.now()
 
-        # Update the user card that has been studied.
+        # Find the user card that has been studied.
         user_card = self.commands.query_single(
             "SELECT * FROM user_card WHERE user_id = ?uid? AND card_id = ?cid?",
             model=UserCard,
             param={'uid': uid, 'cid': cid}
         )
-        # Score cannot be negative, as it'd break card selection.
-        score = max(0, user_card.score + (1 if success else -1))
-        self.commands.execute(
-            """
-            UPDATE user_card SET score = ?score?, last_study = ?now? 
-                WHERE user_id = ?uid? AND card_id = ?cid?
-            """,
-            param={'uid': uid, 'cid': cid, 'score': score, 'now': now.isoformat()}
-        )
 
-        # Update the user's stats.
-        user = self.user_load(uid)
-        # User's score cannot be negative and cannot decrease, as we
-        # can't allow user's level lowering.
-        score = user.score + (1 if success else 0)
-        level = user.calc_level()
-        self.commands.execute(
-            "UPDATE users SET score = ?score?, level = ?level? WHERE id = ?uid?",
-            param={'uid': uid, 'score': score, 'level': level}
-        )
+        if user_card:
+            # Score cannot be negative, as it'd break card selection.
+            score = max(0, user_card.score + (1 if success else -1))
+            # Update the user card with new score and study timestamp.
+            self.commands.execute(
+                """
+                UPDATE user_card SET score = ?score?, last_study = ?now? 
+                    WHERE user_id = ?uid? AND card_id = ?cid?
+                """,
+                param={'uid': uid, 'cid': cid, 'score': score, 'now': now.isoformat()}
+            )
 
-        if level > user.level:
-            return level
+            # Update the user's stats.
+            user = self.user_load(uid)
+            # User's score cannot be negative and cannot decrease, as we
+            # can't allow user's level lowering.
+            score = user.score + (1 if success else 0)
+            level = user.calc_level()
+            # Update the user setting new score and level.
+            self.commands.execute(
+                "UPDATE users SET score = ?score?, level = ?level? WHERE id = ?uid?",
+                param={'uid': uid, 'score': score, 'level': level}
+            )
+
+            # Inform if the user leveled-up.
+            if level > user.level:
+                return level
 
     def user_card_choices(self, uid: int, k = 4) -> List[UserCard]:
         """Returns list of k user cards chosen randomly
