@@ -427,6 +427,8 @@ class StudyManager:
             # User's score cannot be negative and cannot decrease, as we
             # can't allow user's level lowering.
             score = user.score + (1 if success else 0)
+            # Set user score to calculate level correctly.
+            user.score = score
             level = user.calc_level()
             # Update the user setting new score and level.
             self.commands.execute(
